@@ -1,7 +1,6 @@
 package ng.edu.bingham.inventory.domain;
 
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity(name = "drink")
@@ -14,14 +13,15 @@ public class Drink {
     private String type;
     private String company;
 
-    @OneToMany
+    @OneToMany(mappedBy = "drink", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ingredient> ingredientList;
 
     @ElementCollection
-    @CollectionTable(name = "drink_price_list")
     private List<Double> priceList;
 
     public Drink() {
+        this.ingredientList = List.of();
+        this.priceList = List.of();
     }
 
     public Drink(Long id, String name, int capacity, String color, String type, String company, List<Ingredient> ingredientList, List<Double> priceList) {
