@@ -9,26 +9,26 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-
-public class DrinkServiceImpl implements DrinkService {
+public class DrinkServiceImpl implements DrinkService{
     @Autowired
     DrinkRepository drinkRepository;
+
     @Override
     public Drink saveDrink(Drink drink) {
         return drinkRepository.save(drink);
     }
 
+
     @Override
     public Drink getDrinkById(long id) {
-        //return (Drink) drinkRepository.findAll();
         Optional<Drink> drink = drinkRepository.findById(id);
 
-        Drink drinkAvailable = null;
+        Drink emptyDrink = null;
         if (drink.isPresent()){
-            drinkAvailable = drink.get();
-            return drinkAvailable;
+            emptyDrink = drink.get();
+            return emptyDrink;
         } else {
-            throw new RuntimeException("Drink not found.");
+            throw new RuntimeException("Drink Not Found");
         }
     }
 
@@ -37,29 +37,31 @@ public class DrinkServiceImpl implements DrinkService {
         return drinkRepository.findAll();
     }
 
+
     @Override
-    public Drink updateDrink(Drink drink) {
+    public Drink updateDrinkById(Drink drink) {
         Optional<Drink> optionalDrink = drinkRepository.findById(drink.getId());
 
-        if(optionalDrink.isPresent()){
+        if (optionalDrink.isPresent()){
             Drink updateDrink = new Drink();
             updateDrink.setCapacity(drink.getCapacity());
             updateDrink.setColor(drink.getColor());
-            updateDrink.setCompany(drink.getCompany());
             updateDrink.setName(drink.getName());
             updateDrink.setType(drink.getType());
+            updateDrink.setCompany(drink.getCompany());
             updateDrink.setId(drink.getId());
-            updateDrink.setIngredientList(drink.getIngredientList());
+            updateDrink.setIngredients(drink.getIngredients());
 
             drinkRepository.save(updateDrink);
-        } else {
-            throw new RuntimeException("Drink does not exist.");
+            return updateDrink;
+        } else{
+            throw new RuntimeException("Drink does not exist");
         }
-        return drink;
+
     }
 
     @Override
-    public void deleteDrink(long id) {
+    public void deleteDrinkById(long id) {
         drinkRepository.deleteById(id);
     }
 }

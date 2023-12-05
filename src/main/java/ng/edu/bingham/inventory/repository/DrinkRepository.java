@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface DrinkRepository extends JpaRepository<Drink, Long> {
+//    void deleteById();
     // @Query("")
     // List<Drink> findDrinkByPriceListGreaterThan(int price);
 }

@@ -1,11 +1,16 @@
 package ng.edu.bingham.inventory.domain;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.util.Date;
 import java.util.List;
 
 @Entity(name = "drink")
 public class Drink {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private int capacity;
@@ -13,26 +18,46 @@ public class Drink {
     private String type;
     private String company;
 
-    @OneToMany(mappedBy = "drink", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Ingredient> ingredientList;
-
-    @ElementCollection
-    private List<Double> priceList;
-
-    public Drink() {
-        this.ingredientList = List.of();
-        this.priceList = List.of();
+    public int getPrice() {
+        return price;
     }
 
-    public Drink(Long id, String name, int capacity, String color, String type, String company, List<Ingredient> ingredientList, List<Double> priceList) {
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    private int price;
+
+    @CreationTimestamp
+    Date created_at;
+
+    @UpdateTimestamp
+    Date updated_at;
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    @OneToMany
+    private List<Ingredient> ingredients;
+
+
+    public Drink(Long id, String name, int capacity, String color, String type, String company, List<Ingredient> ingredients, int price) {
         this.id = id;
         this.name = name;
         this.capacity = capacity;
         this.color = color;
         this.type = type;
         this.company = company;
-        this.ingredientList = ingredientList;
-        this.priceList = priceList;
+        this.price = price;
+        this.ingredients = ingredients;
+    }
+
+    public Drink() {
     }
 
     public Long getId() {
@@ -83,19 +108,4 @@ public class Drink {
         this.company = company;
     }
 
-    public List<Ingredient> getIngredientList() {
-        return ingredientList;
-    }
-
-    public void setIngredientList(List<Ingredient> ingredientList) {
-        this.ingredientList = ingredientList;
-    }
-
-    public List<Double> getPriceList() {
-        return priceList;
-    }
-
-    public void setPriceList(List<Double> priceList) {
-        this.priceList = priceList;
-    }
 }
