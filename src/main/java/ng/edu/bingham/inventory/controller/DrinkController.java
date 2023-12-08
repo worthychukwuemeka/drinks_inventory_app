@@ -11,17 +11,20 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.NoSuchElementException;
 
 @Controller
+
 public class DrinkController {
-@Autowired
+    final
     DrinkService drinkService;
 
-
+    public DrinkController(DrinkService drinkService) {
+        this.drinkService = drinkService;
+    }
 
 
     @GetMapping("/")
     public String homePage(Model model){
         model.addAttribute("drinks", drinkService.getAllDrink());
-        return "index";
+        return "home";
     }
 
     @GetMapping("/showNewDrinkForm")
